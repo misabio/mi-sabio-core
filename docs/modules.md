@@ -1,1 +1,1 @@
-::: mi_sabio.foo
+::: misabio.foo

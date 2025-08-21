@@ -18,4 +18,4 @@ COPY . /app
 # Sync the project
 RUN uv sync --frozen
 
-CMD [ "python", "mi_sabio/foo.py" ]
+CMD [ "python", "misabio/foo.py" ]

@@ -15,7 +15,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: ["mi_sabio"]
+          paths: ["misabio"]
 theme:
   name: material
   feature:
