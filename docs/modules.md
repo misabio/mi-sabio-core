@@ -1,1 +1,1 @@
-::: misabio.foo
+::: misabio.core.foo

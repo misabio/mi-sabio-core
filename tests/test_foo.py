@@ -1,4 +1,4 @@
-from misabio.foo import foo
+from misabio.core.foo import foo
 
 
 def test_foo():
