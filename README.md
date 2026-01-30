@@ -2,7 +2,6 @@
 
 [![Release](https://img.shields.io/github/v/release/lanquarden/mi-sabio-core)](https://img.shields.io/github/v/release/lanquarden/mi-sabio-core)
 [![Build status](https://img.shields.io/github/actions/workflow/status/lanquarden/mi-sabio-core/main.yml?branch=main)](https://github.com/lanquarden/mi-sabio-core/actions/workflows/main.yml?query=branch%3Amain)
-[![codecov](https://codecov.io/gh/lanquarden/mi-sabio-core/branch/main/graph/badge.svg)](https://codecov.io/gh/lanquarden/mi-sabio-core)
 [![Commit activity](https://img.shields.io/github/commit-activity/m/lanquarden/mi-sabio-core)](https://img.shields.io/github/commit-activity/m/lanquarden/mi-sabio-core)
 [![License](https://img.shields.io/github/license/lanquarden/mi-sabio-core)](https://img.shields.io/github/license/lanquarden/mi-sabio-core)
 
@@ -58,7 +57,6 @@ The CI/CD pipeline will be triggered when you open a pull request, merge to main
 
 To finalize the set-up for publishing to PyPI, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/publishing/#set-up-for-pypi).
 For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/mkdocs/#enabling-the-documentation-on-github).
-To enable the code coverage reports, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/codecov/).
 
 ## Releasing a new version
 
