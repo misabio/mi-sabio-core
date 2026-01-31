@@ -1,0 +1,6 @@
+startup:
+  wipe_data: false
+
+storage:
+  data_dir: "./.cognee"
+  upload_dir: "./uploads"

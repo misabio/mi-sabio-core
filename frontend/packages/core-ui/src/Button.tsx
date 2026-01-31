@@ -12,7 +12,7 @@ export const Button: React.FC<ButtonProps> = ({ variant = 'primary', style, ...p
     cursor: 'pointer',
     ...style
   }
-  
+
   const variantStyles = {
     primary: { backgroundColor: '#0070f3', color: 'white' },
     secondary: { backgroundColor: '#eaeaea', color: 'black' }

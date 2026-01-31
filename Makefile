@@ -51,4 +51,21 @@ help:
 	@uv run python -c "import re; \
 	[[print(f'\033[36m{m[0]:<20}\033[0m {m[1]}') for m in re.findall(r'^([a-zA-Z_-]+):.*?## (.*)$$', open(makefile).read(), re.M)] for makefile in ('$(MAKEFILE_LIST)').strip().split()]"
 
+.PHONY: backend
+backend: ## Run the backend development server
+	@echo "🚀 Starting FastAPI backend..."
+	@uv run uvicorn misabio.core.api:app --reload
+
+.PHONY: frontend
+frontend: ## Run the frontend development server
+	@echo "🚀 Starting Vite frontend..."
+	@cd frontend/packages/app && npm run dev
+
+.PHONY: docker
+docker: ## Build and run the application in Docker
+	@echo "🚀 Building Docker image..."
+	@docker build -t misabio-core .
+	@echo "🚀 Running Docker container on port 8000..."
+	@docker run -p 8000:8000 misabio-core
+
 .DEFAULT_GOAL := help
