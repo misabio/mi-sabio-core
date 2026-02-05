@@ -1,6 +1,8 @@
 import { Button } from '@misabio/core-ui'
 import { Menu, PanelRightClose, PanelRightOpen, Home, Settings, User } from 'lucide-react'
 import { useState } from 'react'
+import { ChatInterface } from './components/ChatInterface'
+import { UploadZone } from './components/UploadZone'
 
 function App() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(true)
@@ -51,28 +53,8 @@ function App() {
           </header>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-auto p-6 space-y-6">
-            <div className="max-w-4xl mx-auto space-y-6">
-              <div className="p-6 border rounded-lg bg-card text-card-foreground shadow-sm">
-                <h2 className="text-2xl font-bold mb-4">Welcome back</h2>
-                <p className="text-muted-foreground mb-6">
-                  This is the main content area. It takes up the remaining space between the sidebar and the details panel.
-                </p>
-                <div className="flex gap-4">
-                  <Button onClick={() => alert('Primary Action')}>Primary Action</Button>
-                  <Button variant="secondary">Secondary</Button>
-                  <Button variant="outline">Outline</Button>
-                  <Button variant="destructive">Destructive</Button>
-                </div>
-              </div>
-
-              {/* Placeholder Content Blocks */}
-              <div className="grid gap-4 md:grid-cols-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="h-32 rounded-lg border bg-muted/10 animate-pulse" />
-                ))}
-              </div>
-            </div>
+          <div className="flex-1 overflow-auto p-4 md:p-6">
+            <ChatInterface />
           </div>
         </main>
 
@@ -81,11 +63,10 @@ function App() {
           <aside className="hidden lg:flex flex-col border-l bg-muted/10 p-4">
             <div className="font-semibold mb-4">Details</div>
             <div className="space-y-4">
-              <div className="h-24 rounded-md border bg-card p-3 shadow-sm text-sm">
-                Contextual information goes here.
-              </div>
-              <div className="h-24 rounded-md border bg-card p-3 shadow-sm text-sm">
-                More details about the selected item.
+              <UploadZone />
+
+              <div className="h-auto rounded-md border bg-card p-4 shadow-sm text-sm text-muted-foreground">
+                <p>Upload documents here to add them to your knowledge base. Once ingested, you can ask questions about them in the chat.</p>
               </div>
             </div>
           </aside>
