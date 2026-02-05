@@ -7,6 +7,7 @@ from typing import Any
 import cognee  # type: ignore[import-untyped]
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -96,15 +97,14 @@ async def chat(request: ChatRequest) -> dict[str, Any]:
     return {"results": results}
 
 
-# Static Files - Mount root to serve frontend
-# We use a trick to serve index.html for SPA routing on 404
+# Static Files - Mount /ui to serve frontend
 static_dir = os.path.join(os.path.dirname(__file__), "static")
 
-if os.path.exists(static_dir):
-    app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
 
-# Catch-all for SPA client-side routing (if not handled by StaticFiles html=True for sub-paths)
-# StaticFiles(html=True) handles /foo -> /foo/index.html or /index.html usually?
-# Actually standard StaticFiles doesn't do deep SPA fallback.
-# We might need a catch-all exception handler or route if we want deep linking to work (e.g. /settings)
-# For MVP, root / is fine.
+@app.get("/")
+async def root() -> RedirectResponse:
+    return RedirectResponse(url="/ui/")
+
+
+if os.path.exists(static_dir):
+    app.mount("/ui", StaticFiles(directory=static_dir, html=True), name="static")
