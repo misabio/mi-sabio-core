@@ -50,11 +50,11 @@ app.add_middleware(
 )
 
 
-class ChatRequest(BaseModel):
+class SearchRequest(BaseModel):
     query: str
 
 
-class ChatResponse(BaseModel):
+class SearchResponse(BaseModel):
     answer: str
 
 
@@ -81,8 +81,8 @@ async def ingest_file(file: UploadFile = File(...)) -> dict[str, str]:  # noqa: 
     return {"status": "success", "filename": filename}
 
 
-@app.post("/api/chat")
-async def chat(request: ChatRequest) -> dict[str, Any]:
+@app.post("/api/search")
+async def search(request: SearchRequest) -> dict[str, Any]:
     try:
         print(f"Searching for: {request.query}")
         results = await cognee.search(query_text=request.query)

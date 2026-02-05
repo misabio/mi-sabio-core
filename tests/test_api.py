@@ -38,12 +38,12 @@ def test_ingest(mock_open, mock_shutil, mock_cognee):
 
 
 @patch("misabio.core.api.cognee")
-def test_chat(mock_cognee):
+def test_search(mock_cognee):
     # Setup mock return value
     mock_results = [{"text": "This is a search result", "score": 0.9}]
     mock_cognee.search = AsyncMock(return_value=mock_results)
 
-    response = client.post("/api/chat", json={"query": "test query"})
+    response = client.post("/api/search", json={"query": "test query"})
 
     assert response.status_code == 200
     assert response.json() == {"results": mock_results}
