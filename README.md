@@ -1,72 +1,80 @@
 # mi-sabio-core
 
-[![Release](https://img.shields.io/github/v/release/lanquarden/mi-sabio-core)](https://img.shields.io/github/v/release/lanquarden/mi-sabio-core)
-[![Build status](https://img.shields.io/github/actions/workflow/status/lanquarden/mi-sabio-core/main.yml?branch=main)](https://github.com/lanquarden/mi-sabio-core/actions/workflows/main.yml?query=branch%3Amain)
-[![Commit activity](https://img.shields.io/github/commit-activity/m/lanquarden/mi-sabio-core)](https://img.shields.io/github/commit-activity/m/lanquarden/mi-sabio-core)
-[![License](https://img.shields.io/github/license/lanquarden/mi-sabio-core)](https://img.shields.io/github/license/lanquarden/mi-sabio-core)
+The core application for the **Mi Sabio** knowledge management ecosystem. This repository contains the open-source single-user version of the platform, featuring a powerful Graph RAG engine and a modern web interface.
 
-This is a template repository for Python projects that use uv for their dependency management.
+## Features
 
-- **Github repository**: <https://github.com/lanquarden/mi-sabio-core/>
-- **Documentation** <https://lanquarden.github.io/mi-sabio-core/>
+- **Knowledge Graph RAG**: Advanced retrieval-augmented generation powered by [Cognee](https://github.com/topoteretes/cognee).
+- **Modern UI**: A responsive and accessible interface built with React, TypeScript, Tailwind CSS, and shadcn/ui.
+- **FastAPI Backend**: High-performance Python backend using `uv` for dependency management.
+- **Containerized**: Ready for deployment with Docker.
 
-## Getting started with your project
+## Tech Stack
 
-### 1. Create a New Repository
+- **Backend**: Python 3.10+, FastAPI, Cognee, UV
+- **Frontend**: React, TypeScript, Vite, Tailwind CSS
+- **Infrastructure**: Docker
 
-First, create a repository on GitHub with the same name as this project, and then run the following commands:
+## Prerequisites
+
+- [Python 3.10+](https://www.python.org/)
+- [Node.js 20+](https://nodejs.org/)
+- [uv](https://github.com/astral-sh/uv) (Python package manager)
+
+## Getting Started
+
+### 1. Installation
+
+Initialize the backend environment and install frontend dependencies:
 
 ```bash
-git init -b main
-git add .
-git commit -m "init commit"
-git remote add origin git@github.com:lanquarden/mi-sabio-core.git
-git push -u origin main
-```
-
-### 2. Set Up Your Development Environment
-
-Then, install the environment and the pre-commit hooks with
-
-```bash
+# Backend setup
 make install
+
+# Frontend setup
+cd frontend
+npm install
 ```
 
-This will also generate your `uv.lock` file
+### 2. Development
 
-### 3. Run the pre-commit hooks
+To run the application locally, you will need two terminal sessions:
 
-Initially, the CI/CD pipeline might be failing due to formatting issues. To resolve those run:
+**Backend (Terminal 1):**
+Starts the FastAPI server on `http://localhost:8000`
+```bash
+make backend
+```
+
+**Frontend (Terminal 2):**
+Starts the Vite development server
+```bash
+make frontend
+```
+
+### 3. Docker
+
+Build and run the full application (backend serving the frontend build):
 
 ```bash
-uv run pre-commit run -a
+# Build the image
+docker build -t misabio-core .
+
+# Run the container
+docker run -p 8000:8000 misabio-core
 ```
 
-### 4. Commit the changes
+Access the application at `http://localhost:8000`.
 
-Lastly, commit the changes made by the two steps above to your repository.
+## Documentation
 
-```bash
-git add .
-git commit -m 'Fix formatting issues'
-git push origin main
-```
+- **API Documentation**: Available at `/docs` (Swagger UI) when running the backend.
+- **Project Documentation**: Run `make docs` to serve the MkDocs site.
 
-You are now ready to start development on your project!
-The CI/CD pipeline will be triggered when you open a pull request, merge to main, or when you create a new release.
+## Contributing
 
-To finalize the set-up for publishing to PyPI, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/publishing/#set-up-for-pypi).
-For activating the automatic documentation with MkDocs, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/mkdocs/#enabling-the-documentation-on-github).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## Releasing a new version
+## License
 
-- Create an API Token on [PyPI](https://pypi.org/).
-- Add the API Token to your projects secrets with the name `PYPI_TOKEN` by visiting [this page](https://github.com/lanquarden/mi-sabio-core/settings/secrets/actions/new).
-- Create a [new release](https://github.com/lanquarden/mi-sabio-core/releases/new) on Github.
-- Create a new tag in the form `*.*.*`.
-
-For more details, see [here](https://fpgmaas.github.io/cookiecutter-uv/features/cicd/#how-to-trigger-a-release).
-
----
-
-Repository initiated with [fpgmaas/cookiecutter-uv](https://github.com/fpgmaas/cookiecutter-uv).
+This project is licensed under the terms of the LICENSE file.
