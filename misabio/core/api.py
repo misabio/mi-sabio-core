@@ -5,6 +5,10 @@ from contextlib import asynccontextmanager
 from typing import Any
 
 import cognee  # type: ignore[import-untyped]
+from cognee.context_global_variables import set_database_global_context_variables  # type: ignore[import-untyped]
+from cognee.infrastructure.databases.graph import get_graph_engine  # type: ignore[import-untyped]
+from cognee.modules.data.methods import get_datasets_by_name  # type: ignore[import-untyped]
+from cognee.modules.users.methods import get_default_user  # type: ignore[import-untyped]
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
@@ -95,6 +99,86 @@ async def search(request: SearchRequest) -> dict[str, Any]:
 
     # Simple formatting if results is a list of objects/text
     return {"results": results}
+
+
+@app.get("/api/graph/data")
+async def get_graph_data() -> dict[str, Any]:
+    try:
+        # Setup context for the default user and main_dataset
+        user = await get_default_user()
+        datasets = await get_datasets_by_name("main_dataset", user.id)
+
+        if not datasets:
+            return {"nodes": [], "edges": []}
+
+        dataset = datasets[0]
+        await set_database_global_context_variables(dataset.id, user.id)
+
+        graph_engine = await get_graph_engine()
+        graph_data = await graph_engine.get_graph_data()
+
+        # Check if graph_data is empty or None
+        if not graph_data:
+            return {"nodes": [], "edges": []}
+
+        nodes, edges = graph_data
+
+        formatted_nodes = []
+        for node in nodes:
+            # node is typically (id, properties_dict)
+            node_id = str(node[0])
+            props = node[1] if len(node) > 1 else {}
+
+            # Extract label/name if available, fallback to ID/Type
+            label = props.get("name", props.get("label", node_id))
+            node_type = props.get("type", "Unknown")
+
+            formatted_nodes.append({
+                "id": node_id,
+                "label": label,
+                "type": node_type,
+                "properties": {k: v for k, v in props.items() if k not in ["id", "type", "name", "label"]},
+            })
+
+        formatted_edges = []
+        for edge in edges:
+            # edge is typically (source_id, target_id, relationship_type, properties)
+            # Adjust based on actual cognee return structure observed in exploration: (source, target, label)
+            source = str(edge[0])
+            target = str(edge[1])
+            label = str(edge[2]) if len(edge) > 2 else "related"
+
+            formatted_edges.append({"source": source, "target": target, "label": label})
+
+    except Exception as e:
+        print(f"Error fetching graph data: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    return {"nodes": formatted_nodes, "edges": formatted_edges}
+
+
+@app.get("/api/node/{node_id}")
+async def get_node_details(node_id: str) -> dict[str, Any]:
+    try:
+        # Setup context for the default user and main_dataset
+        user = await get_default_user()
+        datasets = await get_datasets_by_name("main_dataset", user.id)
+
+        if datasets:
+            dataset = datasets[0]
+            await set_database_global_context_variables(dataset.id, user.id)
+
+        graph_engine = await get_graph_engine()
+        node = await graph_engine.get_node(node_id)
+
+    except Exception as e:
+        print(f"Error fetching node details: {e}")
+        raise HTTPException(status_code=500, detail=str(e)) from e
+
+    if not node:
+        raise HTTPException(status_code=404, detail="Node not found")
+
+    return node  # type: ignore[no-any-return]
 
 
 # Static Files - Mount /ui to serve frontend
